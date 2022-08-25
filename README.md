@@ -5,7 +5,7 @@ This is an assembler, written in dart, for my W.I.P. bfCPU running in Logisim.
 - Install Dart from https://dart.dev/get-dart
 - Clone this repository
 - cd into repository
-- exectute "dart run bin/translator.dart -i infilename -o outfilename" without the quotes
+- Exectute "dart run bin/translator.dart -i infilename -o outfilename" without the quotes
 
 
 ## How To Run Machine
