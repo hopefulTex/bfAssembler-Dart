@@ -1,3 +1,6 @@
+// input file -> strip non-symbols -> trim repeats -> translate to bin
+// file.dart  -> linter.dart       -> linter.dart  -> translator.dart
+
 String toBin(List<String> input,
     [bool logisim = true, bool compressed = true]) {
   String buffer = '';

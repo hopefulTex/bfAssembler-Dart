@@ -10,3 +10,6 @@ testFiles/
 .DS_STORE
 thoughts.txt
 #newspec.txt
+
+# W.I.P.
+linter.dart
