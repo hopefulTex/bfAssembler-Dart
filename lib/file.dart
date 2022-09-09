@@ -1,6 +1,4 @@
-// TODO: MOVE get() TO HELPER FUNC, RECURSIVE INCLUDES IMPLEMENTATION
-// TODO: CHECK FOR INFINITE LOOPING INCLUDES
-// TODO: INSERT INCLUDES
+// TODO: MOVE get() TO HELPER FUNC
 
 import 'dart:io';
 
@@ -9,32 +7,12 @@ Future<bool> exists(String file) async {
 }
 
 Future<List<String>> get(String file) async {
-  List<String> lines = [];
-
-  lines = await open(file);
-
-  // expand imports
-
-  return lines;
-}
-
-List<String> getImports(List<String> lines) {
-  List<String> imports = [];
-
-  imports.addAll(lines.where((element) => element.startsWith('use ')));
-
-  return imports;
+  return await open(file);
 }
 
 Future<List<String>> open(String file) async {
-  List<String> lines = await File(file).readAsLines();
-
-  //expand(lines);
-
-  return lines;
+  return await File(file).readAsLines();
 }
-
-void expand(List<String> lines) {}
 
 void write(String path, String lines) {
   File file = File(path);

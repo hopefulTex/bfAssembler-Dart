@@ -1,0 +1,139 @@
+#this is just my file of thoughts, things at the top are more up to date and should be
+  #taken more seriously than things at the bottom, as there are probably conflicts.
+
+TODO:
+
+  Machine:
+      Combine 'Stack_Ptr++' and 'Stack_Ptr-- (on 0)' based on LSB(Least Signif Bit)
+      2's Compliment? Look up BF implementation docs
+    (2.0)Instruction compression/combination (non-immediate instructions in the data bits)
+    
+  Assembler:
+      Re-order opcodes to match new machine
+      Implement Includes (pull up notes from most recent data structs class for loops)
+      Pre-compute maths (i.e. +++++ turns into +5)
+    (2.0)Instruction compression/combination
+
+
+FORMAT:
+    Immediate: opcode(4) | data(16)
+    Regular:      opcode(4) | null(15) | mode(1)
+
+    Example
+
+
+
+INSTRUCTIONS: [
+
+    (0)0000: NO-OP
+    ----
+    (1)0001: Register ++/-- (LSB)
+    (2)0010: Memory -> Register
+    (3)0011: Immediate -> Register
+    (4)0100: Register -> Memory
+    ----
+    (5)0101:  PTR(Mem) ++/-- (LSB)
+    (6)0110: Register -> PTR(Mem)
+    (7)0111: Immediate -> PTR(Mem)
+    ----
+    (8)1000: PTR(Stack)++
+    (9)1001: PTR(Stack)-- (On !0)
+    (a)1010: PC -> Stack
+    (b)1011: Stack -> PC (if Register != 0)
+    ----
+    (c)1100: Register/Immediate -> Terminal (LSB)
+    (d)1101: Keyboard -> Register
+    ----
+    (e)1110: HALT
+
+]
+
+
+GENERAL REGISTER:
+  GR <-> Memory
+  GR <-> I/O
+  GR <- Immediate
+  GR -> Flags
+  GR ++/--
+
+MEMORY POINTER REGISTER:
+  MPR -> Memory
+  MPR <- Immediate
+  MPR <- GR
+  MPR ++/--
+
+STACK POINTER REGISTER:
+  SPR ++/--
+
+STACK:
+  Stack <- SPR
+  Stack <- PC
+  Stack -> PC
+
+
+I/O:
+  Terminal <- GR
+  Keyboard -> GR
+
+
+
+----------
+Loop: []
+  [
+    (1000)Stack PTR ++
+    (1010) PC -> Stack
+  ]
+    if 0, 
+    (1001)Stack PTR --
+    else, 
+    (1011)Stack -> PC
+
+--------
+OUTPUT:
+______________________________
+|  Immediate: 00000000|ASCII     |1    |
+|  Register:     --------     |-------     |0    |
+|  Clear:          --------     |0000000 |1    |
+|_____________________________|
+Clear screen: Print Immediate (null)
+
+
+
+
+
+
+
+Ptr++/--:
+  One instruction, Least Sig Bit 0 for ++ & 1 for --
+  Example: > > < <
+                Opcode: 3
+                Data: 0 (>), 1(<)
+
+
+Math:
+  Done on working register
+
+
+
+Jumps:
+  Proceeded by Store(0) and followed by Load(0)
+
+
+ Loop:
+  if !0, PC jump PTR in stack (A)
+
+
+EXAMPLE:
+  >>>>++++<++>-
+  Mem_Ptr++ (x4)
+  Mem_Load
+  Work_Reg++ (x4)
+  Mem_Store
+  Mem_Ptr--
+  Mem_Load
+  Work_Reg++ (x2)
+  Mem_Store
+  Mem_Ptr++
+  Mem_Load
+  Work_Reg--
+  Mem_Store
