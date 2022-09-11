@@ -41,8 +41,7 @@ List<String> putSymbols(List<String> buffer) {
   String last = '';
   List<String> iHateRegExp = [];
 
-  // TODO: GET RID OF FOREACH WARNING
-  buffer.forEach((char) {
+  for (String char in buffer) {
     if (char != last) {
       switch (last) {
         case '+':
@@ -80,7 +79,7 @@ List<String> putSymbols(List<String> buffer) {
       iHateRegExp.add('?');
     }
     last = char;
-  });
+  }
 
   // HALT
   iHateRegExp.add('%');
