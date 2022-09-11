@@ -1,3 +1,5 @@
+import 'tokens.dart';
+
 // input file -> strip non-symbols -> trim repeats -> translate to bin
 // file.dart  -> linter.dart       -> linter.dart  -> translator.dart
 
@@ -45,36 +47,43 @@ List<String> putSymbols(List<String> buffer) {
       switch (last) {
         case '+':
           {
-            iHateRegExp.add(symbolMap['/']!);
+            // iHateRegExp.add(symbolMap['/']!);
+            iHateRegExp.add(')');
           }
           break;
         case '-':
           {
-            iHateRegExp.add(symbolMap['/']!);
+            // iHateRegExp.add(symbolMap['/']!);
+            iHateRegExp.add(')');
           }
           break;
         case '<':
           {
-            iHateRegExp.add(symbolMap['\\']!);
+            // iHateRegExp.add(symbolMap['\\']!);
+            iHateRegExp.add('(');
           }
           break;
         case '>':
           {
-            iHateRegExp.add(symbolMap['\\']!);
+            // iHateRegExp.add(symbolMap['\\']!);
+            iHateRegExp.add('(');
           }
           break;
       }
     }
-    iHateRegExp.add(symbolMap[char]!);
+    iHateRegExp.add(char);
 
+    if (char == '[') {
+      iHateRegExp.add('^');
+    }
     if (char == ']') {
-      iHateRegExp.add(symbolMap['_']!);
+      iHateRegExp.add('?');
     }
     last = char;
   });
 
   // HALT
-  iHateRegExp.add('b');
+  iHateRegExp.add('%');
 
   //   buffer.replaceAll(RegExp(r'[^$key]'), '$key$replacement');
   // });
@@ -87,7 +96,12 @@ List<String> putSymbols(List<String> buffer) {
 
 String logi(bool compressed, List<String> lines) {
   int index = 0;
-  String buffer = 'v2.0 raw';
+  const String header = 'v2.0 raw';
+  String buffer = header;
+
+  // commands -> hex
+  lines = getCodes(lines);
+
   if (compressed) {
     lines = compress(lines);
   }
