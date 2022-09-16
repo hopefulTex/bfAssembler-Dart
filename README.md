@@ -1,4 +1,4 @@
-# bf Assembler
+# bf Assembler + circuit
 This is an assembler(?), written in dart, for my W.I.P. bfCPU running in Logisim.
 
 ## How To Assemble
