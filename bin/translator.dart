@@ -24,7 +24,7 @@ Future<int> main(List<String> arguments) async {
   String inFile = results['infile'];
 
   if (!await file.exists(inFile)) {
-    print('Error: file not found');
+    print('Error: file $inFile not found');
     return 1;
   }
 
