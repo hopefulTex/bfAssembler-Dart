@@ -3,40 +3,28 @@
 
 import 'package:translator/translator.dart' as translator;
 import 'package:translator/file.dart' as file;
-import 'package:args/args.dart';
+import 'package:translator/args.dart';
 
 Future<int> main(List<String> arguments) async {
   // args
-  ArgParser parser = ArgParser();
-  parser.addFlag('compressed', abbr: 'c', defaultsTo: true);
-  parser.addFlag('logisim', abbr: 'l', defaultsTo: true);
-  parser.addOption('infile', abbr: 'i', defaultsTo: 'main.bf');
-  parser.addOption('outfile', abbr: 'o', defaultsTo: 'main.lgsm');
-  //parser.addFlag('optimize', abbr: 'o', defaultsTo: false);
-  var results = parser.parse(arguments);
-
-  // compressed implies using logisim
-  bool compressed = results['compressed'];
-  bool logisim = results['logisim'] || compressed;
-  //bool optimized = results['optimize'];
-
-  String outFile = results['outfile'];
-  String inFile = results['infile'];
-
-  if (!await file.exists(inFile)) {
-    print('Error: file $inFile not found');
+  Args args = Args();
+  args.getArgs(arguments);
+  bool verbose = args.verbose;
+  if (!await file.exists(args.inFile)) {
+    print('Error: file ${args.inFile} not found');
     return 1;
   }
 
-  print('main: getting file');
-  List<String> inputLines = await file.get(inFile);
-  print('main: got file');
+  if (verbose) print('main: getting file');
+  List<String> inputLines = await file.get(args.inFile);
+  if (verbose) print('main: got file');
 
-  print('main: making bin');
-  String binLines = translator.toBin(inputLines, logisim, compressed);
-  print('main: made bin');
+  if (verbose) print('main: making bin');
+  String binLines =
+      translator.toBin(inputLines, args.logisim, args.compressed, args.verbose);
+  if (verbose) print('main: made bin');
 
-  print(binLines);
+  if (verbose) print(binLines);
   // if (compressed) {
   //   binLines = translator.compress(binLines);
   //   if (optimized) {
@@ -44,9 +32,9 @@ Future<int> main(List<String> arguments) async {
   //   }
   // }
 
-  print('main: writing file');
-  file.write(outFile, binLines);
-  print('main: wrote file');
+  if (verbose) print('main: writing file');
+  file.write(args.outFile, binLines);
+  if (verbose) print('main: wrote file');
 
   return 0;
 }

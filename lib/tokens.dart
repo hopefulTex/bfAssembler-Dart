@@ -34,9 +34,9 @@ List<String> getTokens(List<String> chars) {
 //   return command;
 // }
 
-List<String> getCodes(List<String> chars) {
+List<String> getCodes(List<String> chars, [bool verbose = false]) {
   List<String> codes = [];
-  print(chars);
+  if (verbose) print(chars);
   for (String char in chars) {
     if (base.containsKey(char)) {
       codes.add(base[char]!);
@@ -45,7 +45,7 @@ List<String> getCodes(List<String> chars) {
       codes.add(extra[char]!);
     }
   }
-  print(codes);
+  if (verbose) print(codes);
   return codes;
 }
 

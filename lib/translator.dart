@@ -4,7 +4,7 @@ import 'tokens.dart';
 // file.dart  -> linter.dart       -> linter.dart  -> translator.dart
 
 String toBin(List<String> input,
-    [bool logisim = true, bool compressed = true]) {
+    [bool logisim = true, bool compressed = true, bool verbose = false]) {
   String buffer = '';
 
   // List of strings -> one string
@@ -19,7 +19,7 @@ String toBin(List<String> input,
   // logisim needs 8 numbers per line
   buffer = 'v2.0 raw';
   if (logisim) {
-    buffer = logi(compressed, input);
+    buffer = logi(compressed, input, verbose);
   }
 
   return buffer;
@@ -93,13 +93,13 @@ List<String> putSymbols(List<String> buffer) {
   return iHateRegExp;
 }
 
-String logi(bool compressed, List<String> lines) {
+String logi(bool compressed, List<String> lines, [bool verbose = false]) {
   int index = 0;
   const String header = 'v2.0 raw';
   String buffer = header;
 
   // commands -> hex
-  lines = getCodes(lines);
+  lines = getCodes(lines, verbose);
 
   if (compressed) {
     lines = compress(lines);
